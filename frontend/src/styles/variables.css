@@ -1,0 +1,45 @@
+:root {
+  /* 🔵 Core Background + Surface */
+  --bgDark: #0b0f2a;
+  --bgDarkAlt: #10163a;
+  --panel: #121c3d;
+  --panelAlt: #1a254f;
+
+  /* 🔤 Text */
+  --textPrimary: #f1f5f9;
+  --textSecondary: #cbd5e1;
+  --textMuted: #94a3b8;
+  --textError: #f87171;
+  --textSuccess: #4ade80;
+
+  /* 🟦 Accents (Branding & Highlights) */
+  --accentBlue: #60a5fa;
+  --accentBlueHover: #3b82f6;
+  --accentGreen: #4ade80;
+  --accentGreenHover: #22c55e;
+  --accentPurple: #a78bfa;
+  --accentPurpleHover: #8b5cf6;
+  --accentYellow: #f4c542;
+  --accentYellowHover: #d9a100;
+
+  /* 🧩 Borders & Dividers */
+  --borderDark: #1e293b;
+  --borderLight: #334155;
+
+  /* ✅ Status Colors */
+  --statusCorrect: #16a34a;
+  --statusIncorrect: #dc2626;
+  --statusWarning: #f59e0b;
+  --statusInfo: #3b82f6;
+
+  /* 🌟 Effects */
+  --glowBlue: rgba(96, 165, 250, 0.4);
+  --glowPurple: rgba(167, 139, 250, 0.3);
+  --glowGreen: rgba(74, 222, 128, 0.3);
+  --shadowSoft: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --shadowHard: 0 6px 16px rgba(0, 0, 0, 0.35);
+
+  /* 🟦 Button Sizes (Optional) */
+  --btnHeight: 2.5rem;
+  --btnRadius: 8px;
+}

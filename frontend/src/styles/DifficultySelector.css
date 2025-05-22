@@ -1,0 +1,64 @@
+@import "./variables.css";
+
+.difficulty-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 2em;
+}
+
+.difficulty-container h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.radio-group {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--borderLight);
+  border-radius: 0.5em;
+  cursor: pointer;
+  background: #fff;
+  transition: all 0.2s ease;
+  color: #1e3a8a;
+}
+
+.radio-option:hover {
+  background-color: #f0f4ff;
+  border-color: #3b82f6;
+}
+
+.radio-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  height: 0;
+}
+
+.radio-option.selected {
+  border-color: #3b82f6;
+  background-color: #2563eb;
+  color: #163c79;
+  font-weight: bold;
+}
+
+.start-button {
+  background-color: #61dafb;
+  color: #fff;
+  border-radius: 0.5em;
+  padding: 0.5em 1em;
+  font-size: 1.5em;
+  cursor: pointer;
+  width: 50%;
+  align-self: center;
+}

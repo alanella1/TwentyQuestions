@@ -1,0 +1,162 @@
+@import "./variables.css";
+
+.game-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  width: 100%;
+  max-width: 800px;
+}
+
+.top-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.score-box {
+  background-color: var(--panelAlt);
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.history-button {
+  background-color: var(--accentPurple);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+}
+
+.give-up-button {
+  background-color: #d33;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.2rem;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.give-up-button:hover {
+  background-color: #a00;
+}
+
+.genie-label {
+  margin: 1rem 0 0.5rem;
+  font-size: 1.2rem;
+}
+
+.genie-box {
+  position: relative;
+  background-color: var(--panel);
+  width: 100%;
+  min-height: 300px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.cost-display {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background-color: #25305e;
+  color: #f4c542;
+  padding: 0.3rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  pointer-events: none; /* So clicks pass through */
+  z-index: 2;
+}
+
+.genie-answer {
+  display: flex;
+  flex-grow: 1;
+  font-weight: bold;
+  font-size: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+}
+
+.user-question {
+  background-color: white;
+  color: black;
+  border-radius: 6px;
+  text-align: center;
+  position: relative;
+  width: 100%;
+}
+
+.question-input {
+  width: 100%;
+  padding: 0.75rem 2.5rem 0.75rem 0.75rem;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  font-size: 1rem;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.input-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  width: 50%;
+  border: none;
+}
+.clear-input {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: #888;
+  cursor: pointer;
+  user-select: none;
+}
+
+.clear-input:hover {
+  color: #000000;
+}
+
+.send-button {
+  background-color: var(--accentBlue);
+  color: black;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.send-button:hover {
+  background-color: var(--accentBlueHover);
+}
+
+.check-cost-button {
+  background-color: var(--accentYellow);
+  color: black;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.check-cost-button:hover {
+  background-color: var(--accentYellowHover);
+  color: black;
+}

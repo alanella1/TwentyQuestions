@@ -1,13 +1,19 @@
+import "./styles/App.css";
+import DifficultySelector from "./components/DifficultySelector";
 import { useState } from "react";
-import "./App.css";
-import MessageList from "./components/MessageList";
+import { Difficulty, Message } from "./types";
+import GameContainer from "./components/GameContainer";
+
 function App() {
-  const [difficulty, setDifficulty] = useState<number | null>(null);
-  const [score, setScore] = useState<number>(0);
+  const [difficulty, setDifficulty] = useState<Difficulty>(null);
+  const [totalScore, setTotalScore] = useState<number>(0);
+  const [curAnswerCost, setCurAnswerCost] = useState<number>(0);
   const [sessionId, setSessionId] = useState<string | null>(null);
-  const [question, setQuestion] = useState("");
-  const [messages, setMessages] = useState<{ sender: "user" | "ai"; text: string }[]>([]);
-  const [gameStarted, setGameStarted] = useState(false);
+  const [question, setQuestion] = useState<string>("");
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [gameStarted, setGameStarted] = useState<boolean>(false);
+
+  // Function to start the game
   const startGame = async () => {
     if (difficulty == null) return;
 
@@ -27,7 +33,6 @@ function App() {
     if (!sessionId || !question.trim()) return;
 
     setMessages((prev) => [...prev, { sender: "user", text: question }]); // Add user message immediately
-    setQuestion(""); // Clear input field
 
     const res = await fetch("http://localhost:8000/ask", {
       method: "POST",
@@ -37,44 +42,37 @@ function App() {
     const data = await res.json();
 
     setMessages((prev) => [...prev, { sender: "ai", text: data.answer }]); // Add genie's response
-    setScore((prev) => prev + data.cost); // update score
+    setCurAnswerCost(data.cost); // Update current answer cost
+    setTotalScore((prev) => prev + data.cost); // update score
   };
 
   return (
-    <div className="container">
-      <h1 className="top-title">Twenty Questions: NBA Genie</h1>
-      {gameStarted && <h2 className="scoreboard">Score: {score}</h2>}
+    <div className="app-wrapper">
+      <h1 className="page-title">Twenty Questions: NBA Genie</h1>
       {!gameStarted && (
-        <div className="difficulty-container">
-          {[1, 2, 3, 4, 5].map((level) => (
-            <button
-              key={level}
-              className={"difficulty-button"}
-              onClick={() => setDifficulty(level)}>
-              {level}
-            </button>
-          ))}
-          <button onClick={startGame} className="start-button">
-            Start
-          </button>
-        </div>
+        <DifficultySelector
+          difficulty={difficulty}
+          setDifficulty={setDifficulty}
+          startGame={startGame}
+        />
       )}
-
-      {gameStarted && <MessageList messages={messages} />}
-
       {gameStarted && (
-        <div className="message-input-container">
-          <input
-            type="text"
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            className="message-input"
-            placeholder="Ask a question..."
-          />
-          <button onClick={sendQuestion} className="send-button">
-            Send
-          </button>
-        </div>
+        <GameContainer
+          score={totalScore}
+          question={question}
+          curAnswerCost={curAnswerCost}
+          setQuestion={setQuestion}
+          onQuestionChange={(e) => setQuestion(e.target.value)}
+          onSend={sendQuestion}
+          onCheckCost={() => alert(`Current cost: ${totalScore}`)}
+          onGiveUp={() => {
+            setGameStarted(false);
+            setSessionId(null);
+            setTotalScore(0);
+            setMessages([]);
+          }}
+          messages={messages}
+        />
       )}
     </div>
   );
