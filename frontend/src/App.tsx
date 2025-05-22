@@ -7,7 +7,7 @@ function App() {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState<{ sender: "user" | "ai"; text: string }[]>([]);
-
+  const [gameStarted, setGameStarted] = useState(false);
   const startGame = async () => {
     if (difficulty == null) return;
 
@@ -20,6 +20,7 @@ function App() {
 
     setSessionId(data.session_id);
     setMessages([]);
+    setGameStarted(true);
   };
 
   const sendQuestion = async () => {
@@ -42,32 +43,39 @@ function App() {
   return (
     <div className="container">
       <h1 className="top-title">Twenty Questions: NBA Genie</h1>
-      <h2 className="scoreboard">Score: {score}</h2>
-      <div className="difficulty-container">
-        {[1, 2, 3, 4, 5].map((level) => (
-          <button key={level} className={"difficulty-button"} onClick={() => setDifficulty(level)}>
-            {level}
+      {gameStarted && <h2 className="scoreboard">Score: {score}</h2>}
+      {!gameStarted && (
+        <div className="difficulty-container">
+          {[1, 2, 3, 4, 5].map((level) => (
+            <button
+              key={level}
+              className={"difficulty-button"}
+              onClick={() => setDifficulty(level)}>
+              {level}
+            </button>
+          ))}
+          <button onClick={startGame} className="start-button">
+            Start
           </button>
-        ))}
-        <button onClick={startGame} className="start-button">
-          Start
-        </button>
-      </div>
+        </div>
+      )}
 
-      <MessageList messages={messages} />
+      {gameStarted && <MessageList messages={messages} />}
 
-      <div className="message-input-container">
-        <input
-          type="text"
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          className="message-input"
-          placeholder="Ask a question..."
-        />
-        <button onClick={sendQuestion} className="send-button">
-          Send
-        </button>
-      </div>
+      {gameStarted && (
+        <div className="message-input-container">
+          <input
+            type="text"
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            className="message-input"
+            placeholder="Ask a question..."
+          />
+          <button onClick={sendQuestion} className="send-button">
+            Send
+          </button>
+        </div>
+      )}
     </div>
   );
 }
