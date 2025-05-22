@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import MessageList from "./components/MessageList";
 function App() {
@@ -10,31 +10,33 @@ function App() {
 
   const startGame = async () => {
     if (difficulty == null) return;
+
     const res = await fetch("http://localhost:8000/start", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ difficulty }),
     });
     const data = await res.json();
+
     setSessionId(data.session_id);
     setMessages([]);
   };
 
   const sendQuestion = async () => {
     if (!sessionId || !question.trim()) return;
+
+    setMessages((prev) => [...prev, { sender: "user", text: question }]); // Add user message immediately
+    setQuestion(""); // Clear input field
+
     const res = await fetch("http://localhost:8000/ask", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ session_id: sessionId, question }),
     });
     const data = await res.json();
-    setMessages((prev) => [
-      ...prev,
-      { sender: "user", text: question },
-      { sender: "ai", text: data.answer },
-    ]);
-    setScore((prev) => prev + data.cost);
-    setQuestion("");
+
+    setMessages((prev) => [...prev, { sender: "ai", text: data.answer }]); // Add genie's response
+    setScore((prev) => prev + data.cost); // update score
   };
 
   return (
@@ -60,7 +62,7 @@ function App() {
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           className="message-input"
-          placeholder="Ask a yes/no question..."
+          placeholder="Ask a question..."
         />
         <button onClick={sendQuestion} className="send-button">
           Send
