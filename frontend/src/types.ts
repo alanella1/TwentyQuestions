@@ -27,8 +27,9 @@ export type DifficultySelectorProps = {
 //Game Contianer
 export type GameContainerProps = {
   onSend: (question: string) => any;
-  onCheckCost: (question: string) => void;
+  onCheckCost: (question: string) => any;
   onGiveUp: () => void;
+  addViewedPair: (pair: QAPair) => void;
   score: number;
   pairs: QAPair[];
 };

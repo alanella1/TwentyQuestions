@@ -68,13 +68,13 @@ function App() {
   const checkCost = async (question: string) => {
     if (!sessionId || !question.trim()) return;
 
-    const res = await fetch("http://localhost:8000/check_cost", {
+    const res = await fetch("http://localhost:8000/ask", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ session_id: sessionId, question }),
     });
     const data = await res.json();
-    let pair = { question, answer: data.answer, cost: data.cost };
+    let pair = { question: question, answer: data.answer, cost: data.cost };
     return pair as QAPair;
   };
 
@@ -93,6 +93,7 @@ function App() {
           onSend={sendQuestion}
           onCheckCost={checkCost}
           onGiveUp={resetGame}
+          addViewedPair={addViewedPair}
           score={totalScore}
           pairs={qaPairs}
         />

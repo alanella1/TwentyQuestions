@@ -158,3 +158,12 @@
 .check-cost-button:hover {
   background-color: var(--accentYellowHover);
 }
+
+.reveal-button {
+  background-color: var(--accentBlue);
+  color: black;
+}
+
+.check-cost-button:hover {
+  background-color: var(--accentBlueHover);
+}

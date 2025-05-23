@@ -10,6 +10,7 @@ const GameContainer: React.FC<GameContainerProps> = ({
   onSend,
   onCheckCost,
   onGiveUp,
+  addViewedPair,
   score,
   pairs,
 }) => {
@@ -20,7 +21,35 @@ const GameContainer: React.FC<GameContainerProps> = ({
   const [curAnswerCost, setCurAnswerCost] = React.useState(0);
   const [gameWon, setGameWon] = React.useState(false);
   const [correctAnswer, setCorrectAnswer] = React.useState("");
+  const [isCheckingCost, setIsCheckingCost] = React.useState(false);
 
+  const handleRevealAnswer = () => {
+    const curPair: QAPair = {
+      question: displayQuestion,
+      answer: curGenieAnswer,
+      cost: curAnswerCost,
+    };
+    addViewedPair(curPair);
+    setIsCheckingCost(false);
+    setCurGenieAnswer(curGenieAnswer);
+    setCurAnswerCost(curAnswerCost);
+  };
+
+  const handleCheckCost = async () => {
+    if (question.trim() === "") return;
+    setQuestion("");
+    setDisplayQusetion(question);
+    setCurGenieAnswer("");
+    setCurAnswerCost(0);
+    const pair: QAPair = await onCheckCost(question);
+    if (pair) {
+      setCurAnswerCost(pair.cost);
+      setCurGenieAnswer(pair.answer);
+      setDisplayQusetion(question);
+      setQuestion("");
+      setIsCheckingCost(true);
+    }
+  };
   const checkGameWon = (pair: QAPair, player: string) => {
     if (pair.answer === "<CORRECT>") {
       setGameWon(true);
@@ -35,6 +64,8 @@ const GameContainer: React.FC<GameContainerProps> = ({
       let this_question = question.trim();
       setQuestion("");
       setDisplayQusetion(question);
+      setCurGenieAnswer("");
+      setCurAnswerCost(0);
       const { pair, player } = await onSend(this_question);
       if (pair) {
         if (!checkGameWon(pair, player)) {
@@ -70,7 +101,7 @@ const GameContainer: React.FC<GameContainerProps> = ({
             <div className="cost-display">Cost: {curAnswerCost}</div>
           </div>
 
-          <div className="genie-answer">{curGenieAnswer}</div>
+          <div className="genie-answer">{isCheckingCost ? "" : curGenieAnswer}</div>
           <div className="user-question">
             <input
               className="question-input"
@@ -98,9 +129,15 @@ const GameContainer: React.FC<GameContainerProps> = ({
         <button className="btn-primary send-button" onClick={handleSendQuestion}>
           Send
         </button>
-        <button className="btn-primary check-cost-button" onClick={() => onCheckCost(question)}>
-          Check Cost
-        </button>
+        {!isCheckingCost ? (
+          <button className="btn-primary check-cost-button" onClick={handleCheckCost}>
+            Check Cost
+          </button>
+        ) : (
+          <button className="btn-primary reveal-button" onClick={handleRevealAnswer}>
+            Reveal Answer
+          </button>
+        )}
       </div>
       {showHistory && <HistoryModal pairs={pairs} onClose={() => setShowHistory(false)} />}
     </div>
