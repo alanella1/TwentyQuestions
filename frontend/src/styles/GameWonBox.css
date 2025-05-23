@@ -1,0 +1,47 @@
+.game-won-box {
+  background-color: #1c1f3a;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 100%;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.won-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #61d4fb;
+}
+
+.won-answer {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.won-score {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.main-menu-button {
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #f4c542;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.play-again-button:hover {
+  background-color: #d9a100;
+}

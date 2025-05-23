@@ -146,7 +146,23 @@ async def ask_question(request: Request):
     SESSIONS[session_id]['total_score'] += cost
 
     history.append({'role': 'assistant', 'content': response_str})
-    return {"answer": answer, "cost": cost}
+    if answer == "<CORRECT>":
+        player = SESSIONS[session_id]['player']
+    else:
+        player = ""
+    return {"answer": answer, "cost": cost, "player": player}
+
+
+@APP.post("/get_answer")
+async def get_answer(request: Request):
+    body = await request.json()
+    session_id = body.get("session_id")
+
+    if session_id not in SESSIONS:
+        return {"error": "Invalid Session ID"}
+
+    player = SESSIONS[session_id]['player']
+    return {"answer": player}
 
 
 def play_cli():

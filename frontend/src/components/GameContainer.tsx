@@ -3,7 +3,8 @@ import "../styles/GameContainer.css";
 import "../styles/App.css";
 import "./HistoryModal";
 import HistoryModal from "./HistoryModal";
-import { GameContainerProps } from "../types";
+import { GameContainerProps, QAPair } from "../types";
+import GameWonBox from "./GameWonBox";
 
 const GameContainer: React.FC<GameContainerProps> = ({
   onSend,
@@ -17,17 +18,29 @@ const GameContainer: React.FC<GameContainerProps> = ({
   const [displayQuestion, setDisplayQusetion] = React.useState("");
   const [question, setQuestion] = React.useState("");
   const [curAnswerCost, setCurAnswerCost] = React.useState(0);
+  const [gameWon, setGameWon] = React.useState(false);
+  const [correctAnswer, setCorrectAnswer] = React.useState("");
+
+  const checkGameWon = (pair: QAPair, player: string) => {
+    if (pair.answer === "<CORRECT>") {
+      setGameWon(true);
+      setCorrectAnswer(player);
+      return true;
+    }
+    return false;
+  };
 
   const handleSendQuestion = async () => {
     if (question.trim()) {
       let this_question = question.trim();
       setQuestion("");
       setDisplayQusetion(question);
-      setCurGenieAnswer("Thinking...");
-      const pair = await onSend(this_question);
+      const { pair, player } = await onSend(this_question);
       if (pair) {
-        setCurGenieAnswer(pair.answer);
-        setCurAnswerCost(pair.cost);
+        if (!checkGameWon(pair, player)) {
+          setCurGenieAnswer(pair.answer);
+          setCurAnswerCost(pair.cost);
+        }
       }
     }
   };
@@ -45,40 +58,44 @@ const GameContainer: React.FC<GameContainerProps> = ({
       </div>
 
       <div className="genie-label">Genie</div>
-      <div className="genie-box">
-        <div className="question-cost-row">
-          <div className="cur-question-display">
-            <strong>Question: </strong>
-            {displayQuestion}
+      {gameWon ? (
+        <GameWonBox correctAnswer={correctAnswer} score={score} onMainMenu={() => onGiveUp()} />
+      ) : (
+        <div className="genie-box">
+          <div className="question-cost-row">
+            <div className="cur-question-display">
+              <strong>Question: </strong>
+              {displayQuestion}
+            </div>
+            <div className="cost-display">Cost: {curAnswerCost}</div>
           </div>
-          <div className="cost-display">Cost: {curAnswerCost}</div>
-        </div>
 
-        <div className="genie-answer">{curGenieAnswer}</div>
-        <div className="user-question">
-          <input
-            className="question-input"
-            type="text"
-            placeholder="Ask a question..."
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-          />
-          {question && (
-            <span className="clear-input" onClick={() => setQuestion("")}>
-              x
-            </span>
-          )}
+          <div className="genie-answer">{curGenieAnswer}</div>
+          <div className="user-question">
+            <input
+              className="question-input"
+              type="text"
+              placeholder="Ask a question..."
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleSendQuestion();
+                }
+              }}
+            />
+            {question && (
+              <span className="clear-input" onClick={() => setQuestion("")}>
+                x
+              </span>
+            )}
+          </div>
         </div>
-      </div>
+      )}
+
       <div className="action-buttons">
-        <button
-          className="btn-primary send-button"
-          onClick={handleSendQuestion}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              handleSendQuestion();
-            }
-          }}>
+        <button className="btn-primary send-button" onClick={handleSendQuestion}>
           Send
         </button>
         <button className="btn-primary check-cost-button" onClick={() => onCheckCost(question)}>

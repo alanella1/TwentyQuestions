@@ -59,9 +59,10 @@ function App() {
       body: JSON.stringify({ session_id: sessionId, question }),
     });
     const data = await res.json();
-    let pair = { question, answer: data.answer, cost: data.cost };
+    let pair: QAPair = { question, answer: data.answer, cost: data.cost };
+    let player: string = data.player;
     addViewedPair(pair);
-    return pair as QAPair;
+    return { pair, player };
   };
 
   const checkCost = async (question: string) => {

@@ -7,6 +7,8 @@
   align-items: center;
   padding: 2rem;
   width: 100%;
+  overflow-x: hidden;
+  max-width: 600px;
 }
 
 .score-box {
@@ -44,7 +46,6 @@
 }
 
 .genie-box {
-  position: relative;
   background-color: var(--panel);
   width: 100%;
   min-height: 300px;
@@ -61,6 +62,19 @@
   padding: 0.75rem;
   background-color: var(--panelAlt);
   border-radius: 6px;
+  gap: 0.5rem;
+  max-width: 100%;
+}
+
+.cur-question-display {
+  font-style: italic;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  flex: 1;
+  min-width: 0;
+  display: block;
+  max-width: 100%;
 }
 
 .cost-display {
@@ -71,10 +85,9 @@
   font-size: 0.85rem;
   font-weight: bold;
   pointer-events: none; /* So clicks pass through */
-}
-
-.cur-question-display {
-  font-style: italic;
+  min-width: 80px;
+  max-width: 100px;
+  text-align: center;
 }
 
 .genie-answer {
@@ -84,6 +97,8 @@
   align-items: center;
   justify-content: center;
   height: 100%;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .user-question {

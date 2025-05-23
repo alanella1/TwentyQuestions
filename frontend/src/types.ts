@@ -26,7 +26,7 @@ export type DifficultySelectorProps = {
 
 //Game Contianer
 export type GameContainerProps = {
-  onSend: (question: string) => Promise<QAPair | undefined>;
+  onSend: (question: string) => any;
   onCheckCost: (question: string) => void;
   onGiveUp: () => void;
   score: number;
