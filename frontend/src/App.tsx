@@ -1,16 +1,15 @@
 import "./styles/App.css";
 import DifficultySelector from "./components/DifficultySelector";
 import { useState } from "react";
-import { Difficulty, Message } from "./types";
+import { Difficulty, Message, QAPair } from "./types";
 import GameContainer from "./components/GameContainer";
 
 function App() {
   const [difficulty, setDifficulty] = useState<Difficulty>(null);
   const [totalScore, setTotalScore] = useState<number>(0);
-  const [curAnswerCost, setCurAnswerCost] = useState<number>(0);
   const [sessionId, setSessionId] = useState<string | null>(null);
-  const [question, setQuestion] = useState<string>("");
   const [messages, setMessages] = useState<Message[]>([]);
+  const [qaPairs, setQAPairs] = useState<QAPair[]>([]);
   const [gameStarted, setGameStarted] = useState<boolean>(false);
 
   // Function to start the game
@@ -29,10 +28,30 @@ function App() {
     setGameStarted(true);
   };
 
-  const sendQuestion = async () => {
-    if (!sessionId || !question.trim()) return;
+  const resetGame = () => {
+    setGameStarted(false);
+    setSessionId(null);
+    setTotalScore(0);
+    setMessages([]);
+    setQAPairs([]);
+    setDifficulty(null);
+  };
 
-    setMessages((prev) => [...prev, { sender: "user", text: question }]); // Add user message immediately
+  const addViewedPair = (pair: QAPair) => {
+    setMessages((prev) => [
+      ...prev,
+      { sender: "user", text: pair.question },
+      { sender: "ai", text: pair.answer },
+    ]);
+    setQAPairs((prev) => [
+      ...prev,
+      { question: pair.question, answer: pair.answer, cost: pair.cost },
+    ]);
+    setTotalScore((prev) => prev + pair.cost);
+  };
+
+  const sendQuestion = async (question: string) => {
+    if (!sessionId || !question.trim()) return;
 
     const res = await fetch("http://localhost:8000/ask", {
       method: "POST",
@@ -40,10 +59,22 @@ function App() {
       body: JSON.stringify({ session_id: sessionId, question }),
     });
     const data = await res.json();
+    let pair = { question, answer: data.answer, cost: data.cost };
+    addViewedPair(pair);
+    return pair as QAPair;
+  };
 
-    setMessages((prev) => [...prev, { sender: "ai", text: data.answer }]); // Add genie's response
-    setCurAnswerCost(data.cost); // Update current answer cost
-    setTotalScore((prev) => prev + data.cost); // update score
+  const checkCost = async (question: string) => {
+    if (!sessionId || !question.trim()) return;
+
+    const res = await fetch("http://localhost:8000/check_cost", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ session_id: sessionId, question }),
+    });
+    const data = await res.json();
+    let pair = { question, answer: data.answer, cost: data.cost };
+    return pair as QAPair;
   };
 
   return (
@@ -58,20 +89,11 @@ function App() {
       )}
       {gameStarted && (
         <GameContainer
-          score={totalScore}
-          question={question}
-          curAnswerCost={curAnswerCost}
-          setQuestion={setQuestion}
-          onQuestionChange={(e) => setQuestion(e.target.value)}
           onSend={sendQuestion}
-          onCheckCost={() => alert(`Current cost: ${totalScore}`)}
-          onGiveUp={() => {
-            setGameStarted(false);
-            setSessionId(null);
-            setTotalScore(0);
-            setMessages([]);
-          }}
-          messages={messages}
+          onCheckCost={checkCost}
+          onGiveUp={resetGame}
+          score={totalScore}
+          pairs={qaPairs}
         />
       )}
     </div>

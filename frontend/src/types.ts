@@ -10,6 +10,12 @@ export type MessageListProps = {
   messages: Message[];
 };
 
+export type QAPair = {
+  question: string;
+  answer: string;
+  cost: number;
+};
+
 //Difficulty
 export type Difficulty = 1 | 2 | 3 | 4 | null;
 export type DifficultySelectorProps = {
@@ -20,13 +26,9 @@ export type DifficultySelectorProps = {
 
 //Game Contianer
 export type GameContainerProps = {
-  score: number;
-  question: string;
-  curAnswerCost: number;
-  onQuestionChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  setQuestion: (question: string) => void;
-  onSend: () => void;
-  onCheckCost: () => void;
+  onSend: (question: string) => Promise<QAPair | undefined>;
+  onCheckCost: (question: string) => void;
   onGiveUp: () => void;
-  messages: { sender: string; text: string }[];
+  score: number;
+  pairs: QAPair[];
 };

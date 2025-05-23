@@ -3,7 +3,7 @@
 .difficulty-container {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
   margin-top: 2em;
 }
 
@@ -16,13 +16,13 @@
 
 .radio-group {
   display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 1rem;
   margin-bottom: 1rem;
 }
 
 .radio-option {
-  display: flex;
-  align-items: center;
   padding: 0.5rem 1rem;
   border: 2px solid var(--borderLight);
   border-radius: 0.5em;
@@ -60,5 +60,4 @@
   font-size: 1.5em;
   cursor: pointer;
   width: 50%;
-  align-self: center;
 }

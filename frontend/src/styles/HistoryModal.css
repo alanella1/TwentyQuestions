@@ -28,14 +28,16 @@
 }
 
 .history-message {
+  display: flex;
+  flex-direction: column;
   margin-bottom: 0.75rem;
 }
 
-.history-message.user {
+.history-message-user > strong {
   color: #61d4fb;
 }
 
-.history-message.ai {
+.history-message-ai > strong {
   color: #f4c542;
 }
 

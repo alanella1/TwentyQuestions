@@ -1,20 +1,31 @@
 import React from "react";
 import "../styles/HistoryModal.css";
-
+import { QAPair } from "../types";
 type Props = {
-  messages: { sender: string; text: string }[];
+  pairs: QAPair[];
   onClose: () => void;
 };
 
-const HistoryModal: React.FC<Props> = ({ messages, onClose }) => {
+const HistoryModal: React.FC<Props> = ({ pairs, onClose }) => {
   return (
     <div className="history-overlay">
       <div className="history-modal">
         <h2>Question History</h2>
         <div className="history-content">
-          {messages.map((msg, idx) => (
-            <div key={idx} className={`history-message ${msg.sender}`}>
-              <strong>{msg.sender === "user" ? "You" : "Genie"}:</strong> {msg.text}
+          {pairs.map((pair, idx) => (
+            <div key={idx} className={"history-message"}>
+              <div className={"history-message-user"}>
+                <strong>You: </strong>
+                {pair.question}
+              </div>
+              <div className={"history-message-ai"}>
+                <strong>Genie: </strong> {pair.answer}
+                <strong>
+                  {"  ("}
+                  {pair.cost}
+                  {")"}
+                </strong>
+              </div>
             </div>
           ))}
         </div>

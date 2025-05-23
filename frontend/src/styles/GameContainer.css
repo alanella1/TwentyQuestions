@@ -1,48 +1,38 @@
 @import "./variables.css";
 
 .game-wrapper {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 2rem;
   width: 100%;
-  max-width: 800px;
-}
-
-.top-row {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin-bottom: 1rem;
 }
 
 .score-box {
   background-color: var(--panelAlt);
   padding: 0.75rem 1.5rem;
+  margin: 0 0 2rem;
   border-radius: 6px;
   font-size: 1rem;
+}
+
+.options-row {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 }
 
 .history-button {
   background-color: var(--accentPurple);
   color: white;
   border: none;
-  padding: 0.75rem 1.5rem;
-  font-weight: bold;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
 }
 
 .give-up-button {
   background-color: #d33;
   color: white;
   border: none;
-  padding: 0.75rem 1.2rem;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
 }
 .give-up-button:hover {
   background-color: #a00;
@@ -61,14 +51,19 @@
   border-radius: 6px;
   display: flex;
   flex-direction: column;
-  font-size: 1.1rem;
   margin-bottom: 1rem;
 }
 
+.question-cost-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background-color: var(--panelAlt);
+  border-radius: 6px;
+}
+
 .cost-display {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
   background-color: #25305e;
   color: #f4c542;
   padding: 0.3rem 0.75rem;
@@ -76,17 +71,18 @@
   font-size: 0.85rem;
   font-weight: bold;
   pointer-events: none; /* So clicks pass through */
-  z-index: 2;
+}
+
+.cur-question-display {
+  font-style: italic;
 }
 
 .genie-answer {
   display: flex;
-  flex-grow: 1;
   font-weight: bold;
   font-size: 1.5rem;
   align-items: center;
   justify-content: center;
-  text-align: center;
   height: 100%;
 }
 
@@ -94,7 +90,6 @@
   background-color: white;
   color: black;
   border-radius: 6px;
-  text-align: center;
   position: relative;
   width: 100%;
 }
@@ -105,18 +100,9 @@
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
   font-size: 1rem;
-  text-align: center;
   flex-shrink: 0;
 }
 
-.input-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  width: 50%;
-  border: none;
-}
 .clear-input {
   position: absolute;
   top: 50%;
@@ -132,14 +118,17 @@
   color: #000000;
 }
 
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
 .send-button {
   background-color: var(--accentBlue);
   color: black;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  font-weight: bold;
-  border-radius: 6px;
-  cursor: pointer;
 }
 
 .send-button:hover {
@@ -149,14 +138,8 @@
 .check-cost-button {
   background-color: var(--accentYellow);
   color: black;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  font-weight: bold;
-  border-radius: 6px;
-  cursor: pointer;
 }
 
 .check-cost-button:hover {
   background-color: var(--accentYellowHover);
-  color: black;
 }
